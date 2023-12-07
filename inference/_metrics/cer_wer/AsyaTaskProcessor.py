@@ -29,8 +29,12 @@ class AsyaTaskProcessor:
         return {
             'request_status': random.choice(['COMPLETED', 'PROCESSING']),
             'results': {
-                'text': 'Hello world',
-            }
+                'segments': [
+                    {
+                        'text': 'Hello world',
+                    },
+                ],
+            },
         }
 
     def task_submit(self, file_path):
@@ -88,7 +92,12 @@ class AsyaTaskProcessor:
                 if status != 'PROCESSING':
                     self.completed_tasks.append(task)
                     just_completed_tasks.append(task)
-                    self.write_to_csv(task['task_id'], task['file_path'], status, response['results']['text'])
+                    self.write_to_csv(
+                        task['task_id'],
+                        task['file_path'],
+                        status,
+                        response['results']['segments'][0]['text'],
+                    )
 
             for task in just_completed_tasks:
                 self.active_tasks.remove(task)
