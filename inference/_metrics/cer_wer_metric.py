@@ -5,6 +5,7 @@ import numpy as np
 
 
 def get_file_truth(column_index, criteria):
+    # with open('../_data/filtered_no_duplicates.tsv', 'r', encoding='utf-8') as file:  # for MaryTTS
     with open('../_data/filtered_no_duplicates_max_upvotes.tsv', 'r', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter='\t')
         for row in reader:
@@ -41,7 +42,7 @@ def calculate_cer_wer(csv_file):
                 prediction = normalize_text(row[3])
 
                 match = re.search(r'audio_(\d+).wav', row[1])
-                # match = re.search(r'common_voice_en_(\d+).wav', row[1])
+                # match = re.search(r'common_voice_en_(\d+).wav', row[1])  # for Ground Truth
                 file_id = match.group(1)
                 cv_file_name = f'common_voice_en_{file_id}.mp3'
 
@@ -52,8 +53,16 @@ def calculate_cer_wer(csv_file):
 
                 truth = normalize_text(truth_row[2])
 
-                row_cer = cer(prediction, truth)
-                row_wer = wer(prediction, truth)
+                if prediction:
+                    row_cer = cer(prediction, truth)
+                    row_wer = wer(prediction, truth)
+                elif len(truth.split()) > 1:
+                    row_cer = 1
+                    row_wer = 1
+                    print(f'Empty prediction: {prediction}, truth: {truth} for file: {row[1]}')
+                else:
+                    skip_count += 1
+                    continue
 
                 # if row_cer > 0:
                 #     # cer_count += 1
@@ -84,4 +93,4 @@ def calculate_cer_wer(csv_file):
     #     writer.writerows(modified_rows)
 
 
-calculate_cer_wer('cer_wer/results/results_vits.csv')
+calculate_cer_wer('cer_wer/results.csv')

@@ -108,9 +108,12 @@ class AsyaTaskProcessor:
         for _ in range(min(self.max_parallel_tasks - len(self.active_tasks), len(self.queue_files))):
             file_path = self.queue_files.pop(0)
             print(f'Submitting task {_} (file: {file_path})')
-            response = self.task_submit(file_path)
-            is_success = response['is_success']
-            task_id = response['task_uuid']
+            try:
+                response = self.task_submit(file_path)
+                is_success = response['is_success']
+                task_id = response['task_uuid']
+            except:
+                is_success = False
 
             if is_success:
                 print(f'Submitted task {task_id} (file: {file_path})')
@@ -155,7 +158,7 @@ class AsyaTaskProcessor:
 
 load_dotenv()
 
-audio_dir = '../../your_tts/audios'
+audio_dir = '../../comospeech/audios'
 wav_files = [f'{audio_dir}/{file}' for file in os.listdir(audio_dir) if file.endswith('.wav')]
 wav_files.sort()
 

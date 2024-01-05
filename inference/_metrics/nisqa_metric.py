@@ -1,14 +1,19 @@
 import pandas as pd
 
-df = pd.read_csv('../inference/_data/NISQA_mos_results.csv')
+model = 'comospeech'
+df_full = pd.read_csv(f'../{model}/NISQA_full_results.csv')
+df_tts = pd.read_csv(f'../{model}/NISQA_tts_results.csv')
 
-avg_quality_mos = df['mos_pred'].mean()
+avg_mos = df_tts['mos_pred'].mean()
+avg_quality = df_full['mos_pred'].mean()
+avg_coloration = df_full['col_pred'].mean()
+avg_noisiness = df_full['noi_pred'].mean()
+avg_discontinuity = df_full['dis_pred'].mean()
+avg_loudness = df_full['loud_pred'].mean()
 
-if 'noi_pred' in df.columns and 'col_pred' in df.columns and 'dis_pred' in df.columns and 'loud_pred' in df.columns:
-    avg_noisiness = df['noi_pred'].mean()
-    avg_coloration = df['col_pred'].mean()
-    avg_discontinuity = df['dis_pred'].mean()
-    avg_loudness = df['loud_pred'].mean()
-    print(f'Quality MOS: {avg_quality_mos}, Noisiness: {avg_noisiness}, Coloration: {avg_coloration}, Discontinuity: {avg_discontinuity}, Loudness: {avg_loudness}')
-else:
-    print(f'Quality MOS: {avg_quality_mos}')
+print(f'MOS: {avg_mos}')
+print(f'Quality: {avg_quality}')
+print(f'Coloration: {avg_coloration}')
+print(f'Noisiness: {avg_noisiness}')
+print(f'Discontinuity: {avg_discontinuity}')
+print(f'Loudness: {avg_loudness}')

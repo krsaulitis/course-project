@@ -5,6 +5,7 @@ import scipy
 import librosa
 import numpy as np
 import pandas as pd
+from tqdm.auto import tqdm
 
 sys.path.append('./model')
 import utils as utils
@@ -81,7 +82,7 @@ def generate():
     with open('../_data/filtered_no_duplicates_max_upvotes.tsv', 'r') as file:
         rows = file.readlines()
 
-        for i, row in enumerate(rows):
+        for i, row in tqdm(enumerate(rows), total=len(rows)):
             sentence = row.split('\t')[2]
             file_id = row.split('\t')[1].split("_")[-1].split(".")[0]
             path = f'./audios_ljs_real/audio_{file_id}.wav'
