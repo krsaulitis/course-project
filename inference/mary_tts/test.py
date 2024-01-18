@@ -3,7 +3,7 @@ from tqdm.auto import tqdm
 
 
 def text_to_speech(text, output_path):
-    response = requests.post('http://localhost:5920/process', params={
+    response = requests.post('http://localhost:59125/process', params={
         "INPUT_TEXT": text,
         "INPUT_TYPE": "TEXT",
         "LOCALE": "en_US",
@@ -26,4 +26,4 @@ def generate():
             text_to_speech(sentence, path)
 
 
-generate()
+text_to_speech('data', 'data.wav')

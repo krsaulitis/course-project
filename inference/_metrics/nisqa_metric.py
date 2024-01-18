@@ -1,6 +1,6 @@
 import pandas as pd
 
-model = 'comospeech'
+model = 'mqtts'
 df_full = pd.read_csv(f'../{model}/NISQA_full_results.csv')
 df_tts = pd.read_csv(f'../{model}/NISQA_tts_results.csv')
 

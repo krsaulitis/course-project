@@ -2,9 +2,13 @@ import re
 import csv
 import os
 import json
-import shutil
+import soundfile as sf
+import numpy as np
+import wavfile
+import librosa
 import pandas as pd
 from pydub import AudioSegment
+from tqdm.auto import tqdm
 
 
 def filter_common_voice():
@@ -64,6 +68,40 @@ def convert_mp3_to_wav():
             print(f"Converted: {file} to {wav_filename}")
 
 
+def convert_sample_rate():
+    audio, sr = librosa.load('../inference/mqtts/model/lj_speech.wav', sr=22050)
+    audio_resampled = librosa.resample(audio, orig_sr=sr, target_sr=16000)
+    sf.write('../inference/mqtts/model/lj_speech_16000.wav', audio_resampled, 16000)
+
+
+def convert_sample_rate_for_folder():
+    # Directory containing the audio files
+    directory = "../inference/tacotron_2/audios"
+    new_directory = "../inference/tacotron_2/audios_22050"
+
+    # Target sample rate
+    target_sample_rate = 22050
+
+    for filename in tqdm(os.listdir(directory)):
+        if filename.endswith(".wav"):
+            file_path = os.path.join(directory, filename)
+
+            # Load the audio file
+            audio = AudioSegment.from_file(file_path)
+
+            # Change the sample rate
+            audio = audio.set_frame_rate(target_sample_rate)
+
+            new_filepath = os.path.join(new_directory, filename)
+
+            # Export the modified file
+            audio.export(new_filepath, format="wav")  # Change format if needed
+
+            print(f"Processed {filename}")
+
+    print("All files have been processed.")
+
+
 # Helper function to extract responses from request/response logs file for ground truth audios
 def extract_responses_from_logs():
     log_file_path = '../inference/_metrics/cer_wer/logs/request_gt_logs.log'
@@ -112,3 +150,5 @@ def merge_two_csv_files():
 
     merged_df.to_csv('merged_results.csv', index=False)
 
+
+convert_sample_rate_for_folder()
