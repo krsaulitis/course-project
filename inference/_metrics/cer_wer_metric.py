@@ -88,9 +88,9 @@ def calculate_cer_wer(csv_file):
         print(f'Average CER: {avg_cer}')
         print(f'Average WER: {avg_wer}')
 
-    with open('../mary_tts/cer_wer.csv', 'w') as file:
+    with open('../fastspeech_2/cer_wer.csv', 'w') as file:
         writer = csv.writer(file)
         writer.writerows(modified_rows)
 
 
-calculate_cer_wer('cer_wer/results/results_mary_tts.csv')
+calculate_cer_wer('cer_wer/results/results_fast_speech.csv')
