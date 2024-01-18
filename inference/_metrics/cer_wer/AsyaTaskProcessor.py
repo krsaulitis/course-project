@@ -222,7 +222,7 @@ processor = AsyaTaskProcessor(
     os.getenv('ASYA_API_KEY'),
     wav_files,
     './results.csv',
-    5,
+    8,
     20,
 )
 

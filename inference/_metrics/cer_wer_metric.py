@@ -41,8 +41,8 @@ def calculate_cer_wer(csv_file):
                 total_count += 1
                 prediction = normalize_text(row[3])
 
-                # match = re.search(r'audio_(\d+).wav', row[1])
-                match = re.search(r'common_voice_en_(\d+).wav', row[1])  # for Ground Truth
+                match = re.search(r'audio_(\d+).wav', row[1])
+                # match = re.search(r'common_voice_en_(\d+).wav', row[1])  # for Ground Truth
                 file_id = match.group(1)
                 cv_file_name = f'common_voice_en_{file_id}.mp3'
 
@@ -88,9 +88,9 @@ def calculate_cer_wer(csv_file):
         print(f'Average CER: {avg_cer}')
         print(f'Average WER: {avg_wer}')
 
-    with open('../_data/cer_wer.csv', 'w') as file:
+    with open('../mary_tts/cer_wer.csv', 'w') as file:
         writer = csv.writer(file)
         writer.writerows(modified_rows)
 
 
-calculate_cer_wer('cer_wer/results/results_gt.csv')
+calculate_cer_wer('cer_wer/results/results_mary_tts.csv')

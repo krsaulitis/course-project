@@ -10,11 +10,13 @@ def read_csv_and_label_model(file_path, model_name):
     data['model'] = model_name  # Assign the model name to a new column
     return data
 
+
 # Function to calculate the z-scores for a given metric within each model group
 def calculate_z_scores(data, metric):
     # Group the data by model and calculate the z-score for each group
     data['z_score_' + metric] = data.groupby('model')[metric].transform(lambda x: (x - x.mean()) / x.std())
     return data
+
 
 # Function to perform a t-test between two groups for a given metric
 def perform_t_test(data, model1, model2, metric):
@@ -27,9 +29,8 @@ def perform_t_test(data, model1, model2, metric):
 
 nisqa_full_file = 'NISQA_full_results.csv'
 nisqa_tts_file = 'NISQA_tts_results.csv'
+cer_wer_file = 'cer_wer.csv'
 
-# Replace with the actual names of your CSV files and the directory they are in
-# Also, provide a dictionary where the keys are CSV filenames and values are the actual model names
 folder_to_model_names = {
     '../comospeech': 'CoMoSpeech',
     '../mqtts': 'MQTTS',
@@ -40,9 +41,14 @@ folder_to_model_names = {
     '../fastspeech_2': 'FastSpeech 2',
     '../glow_tts': 'GlowTTS',
     '../mary_tts': 'MaryTTS',
-    '../common_voice': 'Common Voice',
+    '../_data': 'Common Voice',
 }
-directory = '../'  # Add the path to your directory of CSV files here
+
+file_metrics = {
+    nisqa_full_file: ['mos_pred', 'col_pred', 'noi_pred', 'dis_pred', 'loud_pred'],
+    nisqa_tts_file: ['mos_pred'],
+    cer_wer_file: ['cer', 'wer'],
+}
 
 # Read the data from each CSV file and assign the correct model name
 combined_data = pd.DataFrame()
@@ -64,9 +70,10 @@ t_stat, p_val = perform_t_test(combined_data, model1_name, model2_name, metric_t
 
 print(f'T-statistic: {t_stat}')
 print(f'P-value: {p_val}')
-print(f'Z-score for {model1_name}: {combined_data[combined_data["model"] == model1_name]["z_score_" + metric_to_compare].values[0]}')
-print(f'Z-score for {model2_name}: {combined_data[combined_data["model"] == model2_name]["z_score_" + metric_to_compare].values[0]}')
-
+print(
+    f'Z-score for {model1_name}: {combined_data[combined_data["model"] == model1_name]["z_score_" + metric_to_compare].values[0]}')
+print(
+    f'Z-score for {model2_name}: {combined_data[combined_data["model"] == model2_name]["z_score_" + metric_to_compare].values[0]}')
 
 plt.hist(combined_data[combined_data['model'] == model2_name][metric_to_compare], bins=30, alpha=0.7, color='blue')
 plt.title(f"Histogram for {model2_name}")

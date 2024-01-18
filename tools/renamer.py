@@ -49,7 +49,7 @@ def update_file_names_in_csv(csv_file_path, file_mapping):
 no_duplicates_tsv = '../inference/_data/filtered_no_duplicates.tsv'
 max_upvotes_tsv = '../inference/_data/filtered_no_duplicates_max_upvotes.tsv'
 audio_directory = '../inference/mary_tts/audios/'
-results_csv = '../inference/_metrics/results/results_mary_tts.csv'
+results_csv = '../inference/_metrics/cer_wer/results/results_mary_tts.csv'
 
 # Create mappings
 no_duplicates_map = read_tsv_to_dict(no_duplicates_tsv, 1, 2)
@@ -59,15 +59,15 @@ max_upvotes_map = read_tsv_to_dict(max_upvotes_tsv, 1, 2)
 file_id_mapping = {no_duplicates_map[sentence]: max_upvotes_map[sentence] for sentence in no_duplicates_map if
                    sentence in max_upvotes_map}
 
-# file_id_mapping_diff = {}
-# for sentence in no_duplicates_map:
-#     if sentence in max_upvotes_map:
-#         source_id = no_duplicates_map[sentence]
-#         target_id = max_upvotes_map[sentence]
-#         if source_id != target_id:
-#             file_id_mapping_diff[source_id] = target_id
-#
-# print(file_id_mapping)
+file_id_mapping_diff = {}
+for sentence in no_duplicates_map:
+    if sentence in max_upvotes_map:
+        source_id = no_duplicates_map[sentence]
+        target_id = max_upvotes_map[sentence]
+        if source_id != target_id:
+            file_id_mapping_diff[source_id] = target_id
+
+print(file_id_mapping_diff)
 
 # Rename files in the directory
 # rename_files_in_directory(audio_directory, file_id_mapping)
