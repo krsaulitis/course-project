@@ -151,4 +151,18 @@ def merge_two_csv_files():
     merged_df.to_csv('merged_results.csv', index=False)
 
 
-convert_sample_rate_for_folder()
+def remove_csv_duplicates():
+    # Read the CSV file
+    csv_file_path = '../inference/_metrics/cer_wer/results.csv'
+
+    data = pd.read_csv(csv_file_path, header=None)
+
+    # Assuming the file path is in the second column (index 1)
+    # You can adjust the column index based on your CSV structure
+    data_no_duplicates = data.drop_duplicates(subset=[1])
+
+    # Save the filtered data to a new CSV file
+    data_no_duplicates.to_csv(csv_file_path, index=False, header=False)
+
+
+remove_csv_duplicates()

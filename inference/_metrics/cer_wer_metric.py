@@ -93,4 +93,4 @@ def calculate_cer_wer(csv_file):
         writer.writerows(modified_rows)
 
 
-calculate_cer_wer('cer_wer/results/results_fast_speech.csv')
+calculate_cer_wer('cer_wer/results/results_mqtts.csv')

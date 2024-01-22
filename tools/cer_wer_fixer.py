@@ -1,11 +1,11 @@
 import csv
 
-model = 'mary_tts'
+model = 'mqtts'
 # Define the input and output file paths
-# input_file = f'../inference/{model}/cer_wer.csv'
-# output_file = f'../inference/{model}/cer_wer_fix.csv'
-input_file = '../inference/_data/cer_wer.csv'
-output_file = '../inference/_data/cer_wer_fix.csv'
+input_file = f'../inference/{model}/cer_wer.csv'
+output_file = f'../inference/{model}/cer_wer_fix.csv'
+# input_file = '../inference/_data/cer_wer.csv'
+# output_file = '../inference/_data/cer_wer_fix.csv'
 
 # Open the input file for reading and the output file for writing
 with open(input_file, mode='r', newline='', encoding='utf-8') as infile, \
